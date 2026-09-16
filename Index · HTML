@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wayfarer — Self-drive car rentals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header" id="top">
+  <div class="wrap header-inner">
+    <a href="#top" class="logo">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 15.5L5.3 9.2C5.7 8 6.8 7.2 8.1 7.2H17.9C19.2 7.2 20.3 8 20.7 9.2L23 15.5" stroke="#E8A33D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="2" y="15.5" width="22" height="6" rx="2" stroke="#E8A33D" stroke-width="1.8"/>
+        <circle cx="7.5" cy="21.5" r="1.6" fill="#E8A33D"/>
+        <circle cx="18.5" cy="21.5" r="1.6" fill="#E8A33D"/>
+      </svg>
+      <span>Wayfarer</span>
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <a href="#fleet">Fleet</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Estimate a price</a>
+      <a href="#locations">Locations</a>
+    </nav>
+    <a href="#book" class="btn btn-primary nav-cta">Book a car</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-lines" aria-hidden="true">
+      <svg viewBox="0 0 1200 500" preserveAspectRatio="none">
+        <line class="road-line" x1="0" y1="120" x2="1200" y2="60" />
+        <line class="road-line" x1="0" y1="240" x2="1200" y2="200" />
+        <line class="road-line" x1="0" y1="380" x2="1200" y2="420" />
+        <line class="road-line" x1="0" y1="460" x2="1200" y2="500" />
+      </svg>
+    </div>
+    <div class="hero-car" aria-hidden="true">
+      <svg viewBox="0 0 220 90" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 62 L26 32 C32 22 42 17 54 17 H150 C162 17 172 22 178 32 L196 62"
+              fill="none" stroke="#E8A33D" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+        <rect x="4" y="58" width="204" height="18" rx="6" fill="none" stroke="#E8A33D" stroke-width="3"/>
+        <rect x="6" y="63" width="12" height="8" rx="2" fill="#F4F1EA" class="hero-headlight"/>
+        <rect x="190" y="63" width="12" height="8" rx="2" fill="#D6584F" class="hero-headlight"/>
+        <line x1="66" y1="21" x2="66" y2="58" stroke="#E8A33D" stroke-width="2"/>
+        <line x1="140" y1="21" x2="140" y2="58" stroke="#E8A33D" stroke-width="2"/>
+        <g class="hero-wheel">
+          <circle cx="54" cy="76" r="12" fill="#14161A" stroke="#F4F1EA" stroke-width="3"/>
+          <line x1="54" y1="66" x2="54" y2="86" stroke="#F4F1EA" stroke-width="1.6"/>
+          <line x1="44" y1="76" x2="64" y2="76" stroke="#F4F1EA" stroke-width="1.6"/>
+        </g>
+        <g class="hero-wheel">
+          <circle cx="160" cy="76" r="12" fill="#14161A" stroke="#F4F1EA" stroke-width="3"/>
+          <line x1="160" y1="66" x2="160" y2="86" stroke="#F4F1EA" stroke-width="1.6"/>
+          <line x1="150" y1="76" x2="170" y2="76" stroke="#F4F1EA" stroke-width="1.6"/>
+        </g>
+      </svg>
+    </div>
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">Self-drive rentals · 40+ Indian cities</p>
+        <h1>Pick a car. Pick a date.<br>Go wherever the road bends.</h1>
+        <p class="hero-sub">Wayfarer puts a clean, well-serviced car in your hands in under ten minutes — no paperwork queues, no surprise charges at return.</p>
+        <div class="hero-stats">
+          <div><strong>1,240+</strong><span>cars in the fleet</span></div>
+          <div><strong>4.8/5</strong><span>average trip rating</span></div>
+          <div><strong>24×7</strong><span>roadside help</span></div>
+        </div>
+      </div>
+
+      <form class="booking-card" id="bookForm">
+        <h2>Find a car</h2>
+        <label class="field">
+          <span>Pickup city</span>
+          <select id="pickupCity" required>
+            <option value="">Select a city</option>
+            <option>Jaipur</option>
+            <option>Delhi NCR</option>
+            <option>Mumbai</option>
+            <option>Bengaluru</option>
+            <option>Pune</option>
+            <option>Ahmedabad</option>
+          </select>
+        </label>
+        <div class="field-row">
+          <label class="field">
+            <span>Pickup date</span>
+            <input type="date" id="pickupDate" required>
+          </label>
+          <label class="field">
+            <span>Return date</span>
+            <input type="date" id="returnDate" required>
+          </label>
+        </div>
+        <p class="field-error" id="dateError" hidden>Return date has to be after the pickup date.</p>
+        <button type="submit" class="btn btn-primary btn-block">Search available cars</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <div class="wrap">
+      <h2 class="section-title">Three steps, then you're driving</h2>
+      <ol class="steps">
+        <li>
+          <span class="step-num">01</span>
+          <h3>Choose your car</h3>
+          <p>Filter the fleet by body type, transmission or seating, and lock in a transparent daily rate.</p>
+        </li>
+        <li>
+          <span class="step-num">02</span>
+          <h3>Verify in minutes</h3>
+          <p>Upload your licence once. Returning renters skip this step entirely on every trip after.</p>
+        </li>
+        <li>
+          <span class="step-num">03</span>
+          <h3>Drive away</h3>
+          <p>Meet your car at the pickup point, do a two-minute walkaround on the app, and go.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- FLEET -->
+  <section class="fleet" id="fleet">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">A fleet built for every kind of trip</h2>
+        <p>Every car is serviced within the last 3,000 km and sanitised before handover.</p>
+      </div>
+      <div class="fleet-grid" id="fleetGrid"></div>
+    </div>
+  </section>
+
+  <!-- BRANDS -->
+  <section class="brands">
+    <div class="wrap">
+      <p class="brands-label">Cars sourced from every major manufacturer</p>
+    </div>
+    <div class="brand-marquee" aria-hidden="true">
+      <div class="brand-track">
+        <span>Maruti Suzuki</span><span>Hyundai</span><span>Honda</span><span>Toyota</span>
+        <span>Mahindra</span><span>Skoda</span><span>MG</span><span>Kia</span><span>Tata</span>
+        <span>Maruti Suzuki</span><span>Hyundai</span><span>Honda</span><span>Toyota</span>
+        <span>Mahindra</span><span>Skoda</span><span>MG</span><span>Kia</span><span>Tata</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART-BY-PART INSPECTION -->
+  <section class="parts">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Every car passes a 40-point check</h2>
+        <p>Before any car goes live, four systems get inspected and logged.</p>
+      </div>
+      <div class="parts-grid">
+        <div class="part-card">
+          <svg class="part-icon" viewBox="0 0 48 48"><rect x="10" y="16" width="28" height="20" rx="2" fill="none" stroke="#E8A33D" stroke-width="2"/><path d="M14 16V10h20v6" fill="none" stroke="#E8A33D" stroke-width="2"/><line x1="16" y1="22" x2="32" y2="22" stroke="#E8A33D" stroke-width="2"/><line x1="16" y1="28" x2="26" y2="28" stroke="#E8A33D" stroke-width="2"/></svg>
+          <h3>Engine &amp; fluids</h3>
+          <p>Oil level, coolant, belts and battery health checked before every handover.</p>
+        </div>
+        <div class="part-card">
+          <svg class="part-icon" viewBox="0 0 48 48"><circle cx="24" cy="24" r="14" fill="none" stroke="#E8A33D" stroke-width="2"/><circle cx="24" cy="24" r="4" fill="none" stroke="#E8A33D" stroke-width="2"/><line x1="24" y1="10" x2="24" y2="16" stroke="#E8A33D" stroke-width="2"/><line x1="24" y1="32" x2="24" y2="38" stroke="#E8A33D" stroke-width="2"/><line x1="10" y1="24" x2="16" y2="24" stroke="#E8A33D" stroke-width="2"/><line x1="32" y1="24" x2="38" y2="24" stroke="#E8A33D" stroke-width="2"/></svg>
+          <h3>Tyres &amp; brakes</h3>
+          <p>Tread depth, alignment and brake pad wear measured, not eyeballed.</p>
+        </div>
+        <div class="part-card">
+          <svg class="part-icon" viewBox="0 0 48 48"><rect x="8" y="14" width="32" height="22" rx="3" fill="none" stroke="#E8A33D" stroke-width="2"/><path d="M14 20c2-3 5-4 10-4s8 1 10 4" fill="none" stroke="#E8A33D" stroke-width="2"/><line x1="8" y1="28" x2="40" y2="28" stroke="#E8A33D" stroke-width="2"/></svg>
+          <h3>AC &amp; electricals</h3>
+          <p>Climate control, lights, horn and infotainment tested end to end.</p>
+        </div>
+        <div class="part-card">
+          <svg class="part-icon" viewBox="0 0 48 48"><path d="M14 34V16a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v18" fill="none" stroke="#E8A33D" stroke-width="2"/><path d="M12 34h24v4H12z" fill="none" stroke="#E8A33D" stroke-width="2"/><line x1="18" y1="20" x2="30" y2="20" stroke="#E8A33D" stroke-width="2"/></svg>
+          <h3>Seats &amp; interior</h3>
+          <p>Deep-cleaned upholstery, working seatbelts and a stain-free cabin.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="why">
+    <div class="wrap why-grid">
+      <div class="why-lead">
+        <h2 class="section-title">Renting a car shouldn't feel like a negotiation</h2>
+        <p>We built Wayfarer around the three things renters complain about most: hidden charges, slow verification and cars that don't match the photos.</p>
+      </div>
+      <ul class="why-list">
+        <li>
+          <h3>No hidden charges</h3>
+          <p>Fuel, taxes and insurance are shown upfront in the quoted price — what you see at search is what you pay at checkout.</p>
+        </li>
+        <li>
+          <h3>Free cancellation</h3>
+          <p>Cancel up to 6 hours before pickup for a full refund, no questions asked.</p>
+        </li>
+        <li>
+          <h3>Roadside assistance</h3>
+          <p>A dedicated line reaches a mechanic or a replacement car within 45 minutes, anywhere on your route.</p>
+        </li>
+        <li>
+          <h3>Verified photo condition</h3>
+          <p>Every listing photo is shot the same week the car goes live, not pulled from a catalogue.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PRICE ESTIMATOR -->
+  <section class="pricing" id="pricing">
+    <div class="wrap pricing-inner">
+      <div class="pricing-copy">
+        <h2 class="section-title">Get a rough estimate</h2>
+        <p>Pick a car type and the number of days — this gives you a ballpark before you search real listings. Trips of 7 days or longer get a 10% discount automatically.</p>
+      </div>
+      <div class="pricing-card">
+        <label class="field">
+          <span>Car type</span>
+          <select id="carType">
+            <option value="1200">Hatchback — ₹1,200/day</option>
+            <option value="1900">Sedan — ₹1,900/day</option>
+            <option value="2600">SUV — ₹2,600/day</option>
+            <option value="4200">Premium SUV — ₹4,200/day</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Number of days</span>
+          <input type="number" id="dayCount" min="1" max="60" value="3">
+        </label>
+        <div class="estimate-out">
+          <span>Estimated total</span>
+          <strong id="estimateTotal">₹3,600</strong>
+        </div>
+        <p class="estimate-note" id="estimateNote" hidden>Includes a 10% multi-day discount.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section class="testimonial">
+    <div class="wrap">
+      <blockquote>
+        “I've rented from three different apps for work trips. Wayfarer is the only one where the car at pickup actually matched the listing — down to the fuel level.”
+        <cite>— Ananya R., booked a Sedan in Pune</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- LOCATIONS -->
+  <section class="locations" id="locations">
+    <div class="wrap">
+      <h2 class="section-title">Pick up near you</h2>
+      <div class="locations-grid">
+        <div><svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" fill="none" stroke="#E8A33D" stroke-width="1.6"/><circle cx="12" cy="10" r="2.4" fill="#E8A33D"/></svg>Jaipur — 6 pickup points</div>
+        <div><svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" fill="none" stroke="#E8A33D" stroke-width="1.6"/><circle cx="12" cy="10" r="2.4" fill="#E8A33D"/></svg>Delhi NCR — 14 pickup points</div>
+        <div><svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" fill="none" stroke="#E8A33D" stroke-width="1.6"/><circle cx="12" cy="10" r="2.4" fill="#E8A33D"/></svg>Mumbai — 11 pickup points</div>
+        <div><svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" fill="none" stroke="#E8A33D" stroke-width="1.6"/><circle cx="12" cy="10" r="2.4" fill="#E8A33D"/></svg>Bengaluru — 9 pickup points</div>
+        <div><svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" fill="none" stroke="#E8A33D" stroke-width="1.6"/><circle cx="12" cy="10" r="2.4" fill="#E8A33D"/></svg>Pune — 7 pickup points</div>
+        <div><svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" fill="none" stroke="#E8A33D" stroke-width="1.6"/><circle cx="12" cy="10" r="2.4" fill="#E8A33D"/></svg>Ahmedabad — 5 pickup points</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOK / CONTACT -->
+  <section class="book" id="book">
+    <div class="wrap book-inner">
+      <div>
+        <h2 class="section-title">Ready when you are</h2>
+        <p>Leave your number and preferred city — a Wayfarer coordinator calls back within the hour to confirm a car.</p>
+      </div>
+      <form class="contact-card" id="contactForm">
+        <label class="field">
+          <span>Full name</span>
+          <input type="text" id="cName" required placeholder="Your name">
+        </label>
+        <label class="field">
+          <span>Phone number</span>
+          <input type="tel" id="cPhone" required placeholder="10-digit mobile number" pattern="[0-9]{10}">
+        </label>
+        <label class="field">
+          <span>Preferred city</span>
+          <input type="text" id="cCity" required placeholder="e.g. Jaipur">
+        </label>
+        <button type="submit" class="btn btn-primary btn-block">Request a callback</button>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <span class="logo-text">Wayfarer</span>
+      <p>Self-drive car rentals across India.</p>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <h4>Company</h4>
+        <a href="#top">About</a>
+        <a href="#how">How it works</a>
+        <a href="#locations">Locations</a>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <a href="#book">Contact</a>
+        <a href="#">Help centre</a>
+        <a href="#">Cancellation policy</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+        <a href="#">Insurance terms</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© 2026 Wayfarer Rentals. All rights reserved.</span>
+  </div>
+</footer>
+
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
