@@ -1,0 +1,179 @@
+// ---------- data ----------
+const FLEET = [
+  { name: "Maruti Swift", type: "Hatchback", seats: 5, gear: "Manual", price: 1200 },
+  { name: "Hyundai i20", type: "Hatchback", seats: 5, gear: "Automatic", price: 1400 },
+  { name: "Honda City", type: "Sedan", seats: 5, gear: "Automatic", price: 1900 },
+  { name: "Skoda Slavia", type: "Sedan", seats: 5, gear: "Manual", price: 1750 },
+  { name: "Hyundai Creta", type: "SUV", seats: 5, gear: "Automatic", price: 2600 },
+  { name: "Mahindra Thar", type: "SUV", seats: 4, gear: "Manual", price: 2900 },
+  { name: "Toyota Innova Crysta", type: "MUV", seats: 7, gear: "Manual", price: 3400 },
+  { name: "MG Hector", type: "Premium SUV", seats: 5, gear: "Automatic", price: 4200 },
+  { name: "Toyota Fortuner", type: "Premium SUV", seats: 7, gear: "Automatic", price: 5800 },
+];
+
+// inline car silhouette, shaped per body type, with animated wheels + headlight glow
+function carSVG(type) {
+  const shapes = {
+    "Hatchback": { roofX1: 46, roofX2: 78, bodyL: 10, bodyR: 122, hood: 18 },
+    "Sedan":     { roofX1: 44, roofX2: 82, bodyL: 6,  bodyR: 128, hood: 16 },
+    "SUV":       { roofX1: 40, roofX2: 88, bodyL: 6,  bodyR: 128, hood: 14 },
+    "MUV":       { roofX1: 38, roofX2: 92, bodyL: 4,  bodyR: 130, hood: 14 },
+    "Premium SUV": { roofX1: 38, roofX2: 90, bodyL: 4, bodyR: 130, hood: 12 },
+  };
+  const s = shapes[type] || shapes["Sedan"];
+  return `
+<svg viewBox="0 0 140 62" xmlns="http://www.w3.org/2000/svg" class="car-illustration">
+  <path d="M${s.bodyL} 40 L${s.hood} 22 C${s.roofX1 - 6} 15 ${s.roofX1} 13 ${s.roofX1 + 4} 13
+           H${s.roofX2 - 4} C${s.roofX2} 13 ${s.roofX2 + 6} 15 ${s.roofX2 + 12} 22 L${140 - s.bodyL} 40"
+        fill="none" stroke="#E8A33D" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="${s.bodyL - 4}" y="38" width="${140 - 2 * (s.bodyL - 4)}" height="12" rx="4"
+        fill="none" stroke="#E8A33D" stroke-width="2.2"/>
+  <rect class="headlight" x="${s.bodyL - 2}" y="41" width="7" height="5" rx="1.5" fill="#F4F1EA"/>
+  <rect class="headlight" x="${140 - s.bodyL - 5}" y="41" width="7" height="5" rx="1.5" fill="#D6584F"/>
+  <g class="wheel-group">
+    <circle cx="34" cy="50" r="7" fill="none" stroke="#F4F1EA" stroke-width="2.2"/>
+    <line x1="34" y1="45" x2="34" y2="55" stroke="#F4F1EA" stroke-width="1.3"/>
+    <line x1="29" y1="50" x2="39" y2="50" stroke="#F4F1EA" stroke-width="1.3"/>
+  </g>
+  <g class="wheel-group">
+    <circle cx="106" cy="50" r="7" fill="none" stroke="#F4F1EA" stroke-width="2.2"/>
+    <line x1="106" y1="45" x2="106" y2="55" stroke="#F4F1EA" stroke-width="1.3"/>
+    <line x1="101" y1="50" x2="111" y2="50" stroke="#F4F1EA" stroke-width="1.3"/>
+  </g>
+  <line x1="${s.roofX1 + 4}" y1="17" x2="${s.roofX1 + 4}" y2="38" stroke="#E8A33D" stroke-width="1.6"/>
+  <line x1="${s.roofX2 - 4}" y1="17" x2="${s.roofX2 - 4}" y2="38" stroke="#E8A33D" stroke-width="1.6"/>
+</svg>`;
+}
+
+// ---------- fleet render ----------
+function renderFleet() {
+  const grid = document.getElementById("fleetGrid");
+  grid.innerHTML = FLEET.map(car => `
+    <article class="car-card">
+      <div class="car-visual">${carSVG(car.type)}</div>
+      <div class="car-name">${car.name}</div>
+      <div class="car-meta">
+        <span>${car.type}</span>
+        <span>${car.seats} seats</span>
+        <span>${car.gear}</span>
+      </div>
+      <div class="car-foot">
+        <div class="car-price"><strong>₹${car.price.toLocaleString("en-IN")}</strong><span>/day</span></div>
+        <button type="button" class="car-select" data-price="${car.price}" data-name="${car.name}">Select</button>
+      </div>
+    </article>
+  `).join("");
+
+  grid.querySelectorAll(".car-select").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.getElementById("carType").value = String(btn.dataset.price);
+      updateEstimate();
+      document.getElementById("pricing").scrollIntoView({ behavior: "smooth" });
+    });
+  });
+}
+
+// ---------- mobile nav ----------
+function setupNav() {
+  const toggle = document.getElementById("navToggle");
+  const nav = document.getElementById("mainNav");
+  toggle.addEventListener("click", () => nav.classList.toggle("open"));
+  nav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => nav.classList.remove("open")));
+}
+
+// ---------- booking search form ----------
+function setupBookingForm() {
+  const form = document.getElementById("bookForm");
+  const pickup = document.getElementById("pickupDate");
+  const ret = document.getElementById("returnDate");
+  const err = document.getElementById("dateError");
+
+  const today = new Date().toISOString().split("T")[0];
+  pickup.min = today;
+  ret.min = today;
+
+  pickup.addEventListener("change", () => { ret.min = pickup.value; });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (ret.value && pickup.value && ret.value <= pickup.value) {
+      err.hidden = false;
+      return;
+    }
+    err.hidden = true;
+    const city = document.getElementById("pickupCity").value || "your city";
+    openModal(
+      "Searching cars",
+      `Looking for available cars in <strong>${city}</strong> from ${pickup.value || "your pickup date"} to ${ret.value || "your return date"}. In a full build, this would show live listings from the fleet grid below filtered to that window.`
+    );
+  });
+}
+
+// ---------- price estimator ----------
+function updateEstimate() {
+  const rate = Number(document.getElementById("carType").value);
+  const days = Math.max(1, Number(document.getElementById("dayCount").value) || 1);
+  let total = rate * days;
+  const note = document.getElementById("estimateNote");
+
+  if (days >= 7) {
+    total = total * 0.9;
+    note.hidden = false;
+  } else {
+    note.hidden = true;
+  }
+
+  document.getElementById("estimateTotal").textContent =
+    "₹" + Math.round(total).toLocaleString("en-IN");
+}
+
+function setupEstimator() {
+  document.getElementById("carType").addEventListener("change", updateEstimate);
+  document.getElementById("dayCount").addEventListener("input", updateEstimate);
+  updateEstimate();
+}
+
+// ---------- contact / callback form ----------
+function setupContactForm() {
+  const form = document.getElementById("contactForm");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = document.getElementById("cName").value.trim();
+    const phone = document.getElementById("cPhone").value.trim();
+    const city = document.getElementById("cCity").value.trim();
+
+    if (!/^[0-9]{10}$/.test(phone)) {
+      openModal("Check the phone number", "Enter a 10-digit mobile number so our coordinator can reach you.");
+      return;
+    }
+
+    openModal(
+      "Callback requested",
+      `Thanks, ${name}. A Wayfarer coordinator will call <strong>${phone}</strong> within the hour about cars in <strong>${city}</strong>.`
+    );
+    form.reset();
+  });
+}
+
+// ---------- modal ----------
+function openModal(title, bodyHtml) {
+  const modal = document.getElementById("modal");
+  document.getElementById("modalBody").innerHTML = `<h3>${title}</h3><p>${bodyHtml}</p>`;
+  modal.classList.add("open");
+}
+function setupModal() {
+  const modal = document.getElementById("modal");
+  document.getElementById("modalClose").addEventListener("click", () => modal.classList.remove("open"));
+  modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("open"); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") modal.classList.remove("open"); });
+}
+
+// ---------- init ----------
+document.addEventListener("DOMContentLoaded", () => {
+  renderFleet();
+  setupNav();
+  setupBookingForm();
+  setupEstimator();
+  setupContactForm();
+  setupModal();
+});
